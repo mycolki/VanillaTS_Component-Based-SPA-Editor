@@ -12,6 +12,14 @@ module.exports = {
       template: "./index.html",
     }),
   ],
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: ["style-loader", "css-loader"],
+      },
+    ],
+  },
   devServer: {
     static: {
       directory: path.resolve(__dirname, "dist"),
