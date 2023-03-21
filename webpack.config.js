@@ -2,9 +2,9 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-  entry: "./src/main.ts",
+  entry: "./src/index.ts",
   output: {
-    filename: "main.js",
+    filename: "index.js",
     path: path.resolve(__dirname, "dist"),
   },
   plugins: [
@@ -12,11 +12,23 @@ module.exports = {
       template: "./index.html",
     }),
   ],
+  resolve: {
+    extensions: [".js", ".ts", ".css"],
+    modules: ["./src", "node_modules"],
+  },
   module: {
     rules: [
       {
         test: /\.css$/,
         use: ["style-loader", "css-loader"],
+      },
+      {
+        test: /\.(ts|js)$/,
+        loader: "babel-loader",
+        options: {
+          presets: ["@babel/preset-typescript"],
+        },
+        exclude: /node_modules/,
       },
     ],
   },
@@ -24,6 +36,7 @@ module.exports = {
     static: {
       directory: path.resolve(__dirname, "dist"),
     },
+    historyApiFallback: true,
     port: 3000,
     open: true,
   },
