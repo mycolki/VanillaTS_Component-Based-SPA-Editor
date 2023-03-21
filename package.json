@@ -6,7 +6,7 @@
   "author": "양하윤",
   "license": "MIT",
   "scripts": {
-    "start": "webpack serve --mode=development",
+    "dev": "webpack serve --mode=development",
     "build": "webpack --mode=production"
   },
   "devDependencies": {

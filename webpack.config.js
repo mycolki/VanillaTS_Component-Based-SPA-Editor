@@ -1,5 +1,6 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { HotModuleReplacementPlugin } = require("webpack");
 
 module.exports = {
   entry: "./src/index.ts",
@@ -11,6 +12,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: "./index.html",
     }),
+    new HotModuleReplacementPlugin(),
   ],
   resolve: {
     extensions: [".js", ".ts", ".css"],
@@ -39,5 +41,6 @@ module.exports = {
     historyApiFallback: true,
     port: 3000,
     open: true,
+    hot: true,
   },
 };
