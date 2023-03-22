@@ -42,7 +42,7 @@ const makeEntryWithNicknameBox = () => {
       return;
     }
 
-    console.log('입장 버튼 클릭');
+    window.location.href = '/room';
   });
 
   form.append(input, enterRoomButton);

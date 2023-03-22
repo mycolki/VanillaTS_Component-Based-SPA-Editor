@@ -1,5 +1,5 @@
 function createRoot(rootElement: HTMLElement) {
-  let currentPage: HTMLElement;
+  let currentPage: HTMLElement | null = null;
 
   const root = {
     render(
@@ -9,9 +9,11 @@ function createRoot(rootElement: HTMLElement) {
       const changePage = () => {
         const matched = routes.find(
           ({ path }) => path === window.location.pathname
-        );
+        ) ?? {
+          pageComponent: fallback,
+        };
 
-        const page = matched ? matched.pageComponent() : fallback();
+        const page = matched.pageComponent();
 
         if (page !== currentPage) {
           rootElement.innerHTML = '';
@@ -21,7 +23,6 @@ function createRoot(rootElement: HTMLElement) {
       };
 
       window.addEventListener('popstate', changePage);
-
       changePage();
     },
   };
