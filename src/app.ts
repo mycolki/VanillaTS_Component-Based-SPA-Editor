@@ -1,5 +1,5 @@
 import MainPage from 'pages/main';
-import NotFoundPage from 'pages/NotFound';
+import NotFoundPage from 'pages/notFound';
 
 const routes: { path: string; pageComponent: () => HTMLElement }[] = [
   { path: '/', pageComponent: MainPage },

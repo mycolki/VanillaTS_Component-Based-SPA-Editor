@@ -1,7 +1,74 @@
+body {
+  margin: 0;
+}
+
 * {
   box-sizing: border-box;
 }
 
-body {
-  background-color: wheat;
+button {
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+button:hover {
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  opacity: 0.8;
+  transform: scale(0.98);
+}
+
+.main-page__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.create-room__button {
+  padding: 1rem 2rem;
+  font-size: 1.5rem;
+  background-color: lightskyblue;
+}
+
+.nickname-box {
+  padding: 1rem 2rem;
+  font-size: 1.5rem;
+  gap: 1rem;
+  text-align: center;
+  border-radius: 10px;
+  background-color: lightskyblue;
+}
+
+.nickname-box h1 {
+  font-size: 1.5rem;
+  color: white;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.nickname-box__form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 0;
+  gap: 1.5rem;
+}
+
+.nickname-box__form input {
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  border-radius: 10px;
+}
+.nickname-box__form input:focus {
+  outline: none;
+}
+
+.nickname-box__form button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
 }
