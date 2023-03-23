@@ -1,3 +1,3 @@
-export default function naviagte(path: string) {
+export default function navigate(path: string) {
   window.location.href = path;
 }

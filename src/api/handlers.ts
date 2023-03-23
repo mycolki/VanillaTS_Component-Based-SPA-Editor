@@ -6,7 +6,7 @@ import {
 } from './storage';
 
 interface Room {
-  users: string[];
+  userNames: string[];
   contents: string;
 }
 // 1.입장버튼 누를때
@@ -23,7 +23,7 @@ export function postRoom(name: string) {
 
   if (!room) {
     setToLocalLocalStorage('room', {
-      users: [name],
+      userNames: [name],
       contents: '',
     });
     return;
@@ -31,7 +31,7 @@ export function postRoom(name: string) {
 
   setToLocalLocalStorage('room', {
     ...room,
-    users: [...room.users, name],
+    userNames: [...room.userNames, name],
   });
 }
 
