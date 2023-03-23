@@ -1,4 +1,4 @@
-function createRoot(rootElement: HTMLElement) {
+export default function createRoot(rootElement: HTMLElement) {
   let currentPage: HTMLElement | null = null;
 
   const root = {
@@ -29,5 +29,3 @@ function createRoot(rootElement: HTMLElement) {
 
   return root;
 }
-
-export default createRoot;

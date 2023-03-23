@@ -1,15 +1,15 @@
-function MainPage(): HTMLElement {
-  const container = document.createElement('div');
-  const createRoomButton = document.createElement('button');
+import createElement from 'utils/createElement';
+import naviagte from 'utils/navigate';
+
+export default function MainPage(): HTMLElement {
+  const container = createElement('div', 'main-page__container');
+  const createRoomButton = createElement('button', 'create-room__button');
 
   createRoomButton.textContent = '방 만들기';
-  createRoomButton.className = 'create-room__button';
-  container.className = 'main-page__container';
-
   createRoomButton.addEventListener('click', () => {
-    const entryWithNicknameBox = makeEntryWithNicknameBox();
+    const nameForm = createNameForm();
     container.removeChild(createRoomButton);
-    container.append(entryWithNicknameBox);
+    container.append(nameForm);
   });
 
   container.append(createRoomButton);
@@ -17,32 +17,24 @@ function MainPage(): HTMLElement {
   return container;
 }
 
-export default MainPage;
+function createNameForm() {
+  const box = createElement('div', 'name-box');
+  const header = createElement('h1');
+  const form = createElement('form', 'name-box__form');
+  const input = createElement('input');
+  const enterRoomButton = createElement('button');
 
-const makeEntryWithNicknameBox = () => {
-  const box = document.createElement('div');
-  const header = document.createElement('h1');
-  const form = document.createElement('form');
-  const input = document.createElement('input');
-  const enterRoomButton = document.createElement('button');
-
-  box.className = 'nickname-box';
-  form.className = 'nickname-box__form';
   header.textContent = '닉네임 설정';
   input.setAttribute('placeholder', '닉네임을 입력해 주세요');
+  input.setAttribute('required', '');
   input.type = 'text';
   enterRoomButton.type = 'submit';
   enterRoomButton.textContent = '입장하기';
 
-  enterRoomButton.addEventListener('click', (e) => {
+  form.addEventListener('submit', (e) => {
     e.preventDefault();
-
-    if (!input.value) {
-      alert('닉네임을 입력해 주세요.');
-      return;
-    }
-
-    window.location.href = '/room';
+    setRoom(input.value);
+    naviagte('/room');
   });
 
   form.append(input, enterRoomButton);

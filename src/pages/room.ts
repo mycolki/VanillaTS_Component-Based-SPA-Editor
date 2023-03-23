@@ -1,15 +1,14 @@
-function RoomPage(): HTMLElement {
-  const container = document.createElement('div');
-  const editorWrapper = document.createElement('div');
-  const editor = document.createElement('textarea');
-  const sidebar = document.createElement('div');
-  const sidebarHeader = document.createElement('h1');
-  const userList = document.createElement('ul');
-  const message = document.createElement('p');
+import createElement from 'utils/createElement';
 
-  container.className = 'room-page__container';
-  editorWrapper.className = 'editor-wrapper';
-  sidebar.className = 'sidebar';
+export default function RoomPage(): HTMLElement {
+  const container = createElement('div', 'room-page__container');
+  const editorWrapper = createElement('div', 'editor-wrapper');
+  const editor = createElement('textarea');
+  const sidebar = createElement('div', 'sidebar');
+  const sidebarHeader = createElement('h1');
+  const userList = createElement('ul');
+  const message = createElement('p');
+
   sidebarHeader.textContent = '참여자 목록';
 
   sidebar.append(sidebarHeader, userList, message);
@@ -18,5 +17,3 @@ function RoomPage(): HTMLElement {
 
   return container;
 }
-
-export default RoomPage;
