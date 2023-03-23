@@ -39,8 +39,14 @@ export function postRoom(name: string) {
 // 세션에 자기 네임으로 저장된 게 있으면 리턴, getMyName
 // contents 랑, 유저목록 리턴
 
-export function getMyName() {
-  return getFromSessionStorage<string>('name');
+export function getName() {
+  const name = getFromSessionStorage<string>('name');
+
+  if (!name) {
+    throw new Error('닉네임 설정 페이지로 이동합니다. 😀');
+  }
+
+  return name;
 }
 
 export function getRoom() {
