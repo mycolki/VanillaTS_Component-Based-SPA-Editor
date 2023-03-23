@@ -40,7 +40,7 @@ export function postRoom(name: string) {
 // contents 랑, 유저목록 리턴
 
 export function getMyName() {
-  return getFromSessionStorage('name');
+  return getFromSessionStorage<string>('name');
 }
 
 export function getRoom() {

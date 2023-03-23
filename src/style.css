@@ -126,6 +126,16 @@ button:hover {
 .sidebar ul {
   flex: 1;
   background-color: rgb(216, 238, 252);
+  text-align: center;
+}
+
+.sidebar ul li {
+  padding: 10px;
+}
+
+.my-name {
+  font-weight: 500;
+  color: rgb(9, 93, 190);
 }
 
 .sidebar p {

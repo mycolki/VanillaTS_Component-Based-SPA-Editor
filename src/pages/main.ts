@@ -1,3 +1,4 @@
+import { postName, postRoom } from 'utils/handlers';
 import createElement from 'utils/createElement';
 import naviagte from 'utils/navigate';
 
@@ -27,6 +28,7 @@ function createNameForm() {
   header.textContent = '닉네임 설정';
   input.setAttribute('placeholder', '닉네임을 입력해 주세요');
   input.setAttribute('required', '');
+  input.autofocus = true;
   input.type = 'text';
   enterRoomButton.type = 'submit';
   enterRoomButton.textContent = '입장하기';
@@ -41,4 +43,9 @@ function createNameForm() {
   box.append(header, form);
 
   return box;
-};
+}
+
+function setRoom(name: string) {
+  postName(name);
+  postRoom(name);
+}
