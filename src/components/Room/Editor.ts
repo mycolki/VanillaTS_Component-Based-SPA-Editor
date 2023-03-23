@@ -1,15 +1,23 @@
+import { putContents } from 'api/handlers';
 import createElement from 'utils/createElement';
+import debounce from 'utils/debounce';
 
-export default function Editor({
-  contents,
-}: {
+interface Room {
+  userNames: string[];
   contents: string;
-}): HTMLElement {
-  const editorWrapper = createElement('div', 'editor-wrapper');
-  const editor = createElement('textarea');
-  editor.textContent = contents;
+}
 
-  editorWrapper.append(editor);
+export default function Editor({ contents, userNames }: Room): HTMLElement {
+  const wrapper = createElement('div', 'editor-wrapper');
+  const textArea = createElement('textarea');
+  textArea.textContent = contents;
 
-  return editorWrapper;
+  const setContents = debounce(() => {
+    putContents({ contents, userNames }, textArea.value);
+  }, 1000);
+  textArea.addEventListener('input', setContents);
+
+  wrapper.append(textArea);
+
+  return wrapper;
 }

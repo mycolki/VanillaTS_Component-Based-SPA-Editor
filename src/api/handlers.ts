@@ -58,3 +58,9 @@ export function getRoom() {
 
   return room;
 }
+
+// 에디터 저장
+
+export function putContents(currnetRoom: Room, contents: string) {
+  setToLocalLocalStorage('room', { ...currnetRoom, contents });
+}
