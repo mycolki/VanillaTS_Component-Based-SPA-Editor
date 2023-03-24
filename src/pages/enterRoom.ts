@@ -1,4 +1,4 @@
-import { postName, postRoom } from 'api/handlers';
+import { postUser } from 'api/handlers';
 import createElement from 'utils/createElement';
 import navigate from 'utils/navigate';
 
@@ -18,20 +18,16 @@ export default function EnterRoomPage(): HTMLElement {
   enterRoomButton.type = 'submit';
   enterRoomButton.textContent = '입장하기';
 
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    setRoom(input.value);
-    navigate('/room');
-  });
-
   form.append(input, enterRoomButton);
   box.append(header, form);
   container.append(box);
 
-  return container;
-}
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
 
-function setRoom(name: string) {
-  postName(name);
-  postRoom(name);
+    postUser({ name: input.value });
+    navigate('/room');
+  });
+
+  return container;
 }

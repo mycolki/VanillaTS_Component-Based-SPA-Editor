@@ -6,11 +6,11 @@ export default function MainPage(): HTMLElement {
   const createRoomButton = createElement('button', 'create-room__button');
 
   createRoomButton.textContent = '방 만들기';
+  container.append(createRoomButton);
+
   createRoomButton.addEventListener('click', () => {
     navigate('/enter-room');
   });
-
-  container.append(createRoomButton);
 
   return container;
 }
