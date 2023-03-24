@@ -1,9 +1,9 @@
 import { getUser, getRoom } from 'api/handlers';
 import { RoomData, User } from 'types';
 import createElement from 'utils/createElement';
+import navigate from 'utils/navigate';
 import Editor from 'components/Room/Editor';
 import UserList from 'components/Room/UserList';
-import navigate from 'utils/navigate';
 
 export default function RoomPage(): HTMLElement {
   const container = createElement('div', 'room-page__container');
@@ -22,6 +22,7 @@ export default function RoomPage(): HTMLElement {
 
   window.addEventListener('storage', () => {
     const updatedRoomData = getRoom(user);
+
     if (updatedRoomData !== roomData) {
       render(updatedRoomData, user);
       roomData = updatedRoomData;
