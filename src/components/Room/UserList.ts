@@ -1,7 +1,7 @@
 import { User } from 'types';
 import createElement from 'utils/createElement';
 
-const roomUsers: User[] = [];
+let roomUsers: User[] = [];
 
 export default function UserList({
   users,

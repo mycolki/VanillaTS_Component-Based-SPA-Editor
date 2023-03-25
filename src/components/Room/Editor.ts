@@ -1,16 +1,25 @@
-import { putContents } from 'api/handlers';
-import { RoomData } from 'types';
+import { postContent, putContents } from 'api/handlers';
+import { RoomData, User } from 'types';
 import createElement from 'utils/createElement';
 
-export default function Editor({ contents, users }: RoomData): HTMLElement {
+export default function Editor({
+  roomData: { contents, users },
+  user,
+}: {
+  roomData: RoomData;
+  user: User;
+}): HTMLElement {
   const wrapper = createElement('div', 'editor-wrapper');
   const textArea = createElement('textarea');
+  const cursor = createElement('span', 'cursor');
+  wrapper.append(cursor);
   textArea.textContent = contents;
 
-  putContents({ contents, users: users }, textArea.value);
+  textArea.addEventListener('input', (e) => {
+    const target = e.target as HTMLTextAreaElement;
 
-  textArea.addEventListener('input', () => {
-    putContents({ contents, users: users }, textArea.value);
+    putContents({ contents, users }, textArea.value);
+    postContent(user.name, target.selectionEnd);
   });
 
   wrapper.append(textArea);
