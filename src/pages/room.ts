@@ -60,8 +60,6 @@ export default function RoomPage(): HTMLElement {
     }
   });
 
-  // roomData 로 editor 랑 userList 둘다 렌더링, 커서이벤트는 어떻게 전달해야하지.
-  // 그리고 방 입장하는 거 고장남. ㅠㅠ
   function render(roomData: RoomData, user: User) {
     const updatedEditor = Editor({ roomData, user });
     const updatedUserList = UserList({

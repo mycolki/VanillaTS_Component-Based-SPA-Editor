@@ -14,11 +14,13 @@ export default function UserList({
   const header = createElement('h1');
   const list = createList(users, user);
   const message = createElement('p');
-  header.textContent = '참여자 목록';
   sidebar.append(header, list, message);
+  header.textContent = '참여자 목록';
 
   if (JSON.stringify(roomUsers) !== JSON.stringify(users)) {
     const newUser = users[users.length - 1];
+    roomUsers = users;
+
     message.textContent = `${newUser.name}님이 입장했습니다`;
     setTimeout(() => {
       message.textContent = '';
