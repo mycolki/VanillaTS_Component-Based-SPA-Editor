@@ -3,13 +3,12 @@ import createElement from 'utils/createElement';
 
 let roomUsers: User[] = [];
 
-export default function UserList({
-  users,
-  user,
-}: {
+interface Props {
   users: User[];
   user: User;
-}): HTMLElement {
+}
+
+export default function UserList({ users, user }: Props): HTMLElement {
   const sidebar = createElement('div', 'sidebar');
   const header = createElement('h1');
   const list = createList(users, user);
@@ -30,7 +29,7 @@ export default function UserList({
   return sidebar;
 }
 
-function createList(users: User[], user: User) {
+const createList = (users: User[], user: User) => {
   const listItems = users.map(({ name }) => {
     const li = createElement('li', name === user.name ? 'user' : undefined);
     li.textContent = name;
@@ -41,4 +40,4 @@ function createList(users: User[], user: User) {
   list.append(...listItems);
 
   return list;
-}
+};

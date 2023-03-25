@@ -6,3 +6,8 @@ export interface RoomData {
   users: User[];
   contents: string;
 }
+
+export interface CursorData {
+  user: User;
+  selectionEnd: number;
+}

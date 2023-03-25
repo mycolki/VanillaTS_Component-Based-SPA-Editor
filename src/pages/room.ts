@@ -1,5 +1,6 @@
 import { getUser, getRoom } from 'api/handlers';
-import { RoomData, User } from 'types';
+import { CursorData, RoomData, User } from 'types';
+import { parse } from 'utils/parse';
 import createElement from 'utils/createElement';
 import navigate from 'utils/navigate';
 import Editor from 'components/Room/Editor';
@@ -15,7 +16,7 @@ export default function RoomPage(): HTMLElement {
     return container;
   }
 
-  let roomData = getRoom(user);
+  const roomData = getRoom(user);
   let editor = Editor({ roomData, user });
   let userList = UserList({ users: roomData.users, user });
   container.append(editor, userList);
@@ -23,62 +24,34 @@ export default function RoomPage(): HTMLElement {
   window.addEventListener('storage', (e) => {
     const updatedRoomData = getRoom(user);
 
-    if (updatedRoomData !== roomData) {
-      render(updatedRoomData, user);
-      roomData = updatedRoomData;
-    }
-
     if (e.key === 'editing') {
-      const data = parse<{ userName: string; selectionEnd: number }>(
-        e.newValue
-      );
-      if (data) {
-        const { userName, selectionEnd } = data;
-        const textArea = document.querySelector('textarea');
-        const cursor = document.querySelector<HTMLSpanElement>('.cursor');
-
-        if (textArea && cursor) {
-          cursor.textContent = userName;
-          const lineHeight = parseInt(
-            getComputedStyle(textArea).lineHeight,
-            10
-          );
-          const lines = textArea.value.slice(0, selectionEnd).split('\n');
-          const currentLine = lines.length;
-          const prevLines = lines.slice(0, currentLine - 1);
-          const prevLinesLength = prevLines.reduce(
-            (length, line) => length + line.length + 1,
-            0
-          );
-
-          cursor.style.left = `${(selectionEnd - prevLinesLength) * 10}px`;
-          cursor.style.top = `${
-            (currentLine - 1) * lineHeight - textArea.scrollTop
-          }px`;
-        }
-      }
+      const cursorData = parse<CursorData>(e.newValue);
+      renderEditor(updatedRoomData, user, cursorData);
+      return;
     }
+
+    renderUserList(updatedRoomData, user);
+    renderEditor(updatedRoomData, user, null);
   });
 
-  function render(roomData: RoomData, user: User) {
-    const updatedEditor = Editor({ roomData, user });
+  const renderEditor = (
+    roomData: RoomData,
+    user: User,
+    cursorData: CursorData | null
+  ) => {
+    const updatedEditor = Editor({ roomData, user, cursorData });
+    container.replaceChild(updatedEditor, editor);
+    editor = updatedEditor;
+  };
+
+  const renderUserList = (roomData: RoomData, user: User) => {
     const updatedUserList = UserList({
       users: roomData.users,
       user,
     });
-
-    container.replaceChild(updatedEditor, editor);
     container.replaceChild(updatedUserList, userList);
-    editor = updatedEditor;
     userList = updatedUserList;
-  }
+  };
 
   return container;
-}
-
-function parse<T>(data: string | null) {
-  if (!data) {
-    return null;
-  }
-  return JSON.parse(data) as T;
 }

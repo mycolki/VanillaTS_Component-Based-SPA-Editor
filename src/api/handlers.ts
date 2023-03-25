@@ -55,9 +55,9 @@ export function putContents(currnetRoom: RoomData, contents: string) {
   setToLocalLocalStorage(ROOM_KEY, { ...currnetRoom, contents });
 }
 // 4. 커서
-export function postContent(userName: string, selectionEnd: number) {
+export function postContent(user: User, selectionEnd: number) {
   setToLocalLocalStorage('editing', {
-    userName,
+    user,
     selectionEnd,
   });
 }
