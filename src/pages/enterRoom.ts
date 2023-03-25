@@ -3,31 +3,29 @@ import createElement from 'utils/createElement';
 import navigate from 'utils/navigate';
 
 export default function EnterRoomPage(): HTMLElement {
-  const container = createElement('div', 'main-page__container');
-  const box = createElement('div', 'name-box');
-  const header = createElement('h1');
-  const form = createElement('form', 'name-box__form');
-  const input = createElement('input');
-  const enterRoomButton = createElement('button');
-
-  header.textContent = '닉네임 설정';
-  input.setAttribute('placeholder', '닉네임을 입력해 주세요');
-  input.setAttribute('required', '');
-  input.autofocus = true;
-  input.type = 'text';
-  enterRoomButton.type = 'submit';
-  enterRoomButton.textContent = '입장하기';
-
-  form.append(input, enterRoomButton);
-  box.append(header, form);
-  container.append(box);
-
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    postUser({ name: input.value });
-    navigate('/room');
+  const header = createElement('h1', { textContent: '닉네임 설정' });
+  const enterRoomButton = createElement('button', { type: 'submit', textContent: '입장하기' });
+  const input = createElement('input', {
+    type: 'text',
+    placeholder: '닉네임을 입력해 주세요',
+    required: true,
+    autofocus: true,
   });
+  const form = createElement(
+    'form',
+    {
+      className: 'name-box__form',
+      onsubmit(e) {
+        e.preventDefault();
+        postUser({ name: input.value });
+        navigate('/room');
+      },
+    },
+    input,
+    enterRoomButton
+  );
+  const box = createElement('div', { className: 'name-box' }, header, form);
+  const container = createElement('div', { className: 'main-page__container' }, box);
 
   return container;
 }

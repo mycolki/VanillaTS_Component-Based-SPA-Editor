@@ -1,7 +1,7 @@
-import EnterRoomPage from 'pages/enterRoom';
-import MainPage from 'pages/main';
-import NotFoundPage from 'pages/notFound';
-import RoomPage from 'pages/room';
+import EnterRoomPage from 'pages/EnterRoom';
+import MainPage from 'pages/Main';
+import NotFoundPage from 'pages/NotFound';
+import RoomPage from 'pages/Room';
 
 const routes = [
   { path: '/', pageComponent: MainPage },

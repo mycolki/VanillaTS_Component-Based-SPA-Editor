@@ -9,12 +9,10 @@ interface Props {
 }
 
 export default function UserList({ users, user }: Props): HTMLElement {
-  const sidebar = createElement('div', 'sidebar');
-  const header = createElement('h1');
+  const header = createElement('h1', { textContent: '참여자 목록' });
   const list = createList(users, user);
   const message = createElement('p');
-  sidebar.append(header, list, message);
-  header.textContent = '참여자 목록';
+  const sidebar = createElement('div', { className: 'sidebar' }, header, list, message);
 
   if (JSON.stringify(roomUsers) !== JSON.stringify(users)) {
     const newUser = users[users.length - 1];
@@ -31,13 +29,11 @@ export default function UserList({ users, user }: Props): HTMLElement {
 
 const createList = (users: User[], user: User) => {
   const listItems = users.map(({ name }) => {
-    const li = createElement('li', name === user.name ? 'user' : undefined);
-    li.textContent = name;
-    return li;
+    return createElement('li', {
+      className: name === user.name ? 'user' : undefined,
+      textContent: name,
+    });
   });
 
-  const list = createElement('ul');
-  list.append(...listItems);
-
-  return list;
+  return createElement('ul', undefined, ...listItems);
 };

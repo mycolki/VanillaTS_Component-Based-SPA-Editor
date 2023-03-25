@@ -34,18 +34,13 @@ export function getRoom(user: User) {
     return newRoomData;
   }
 
-  const isSameUserInRoom = prevRoomData.users.some(
-    ({ name }) => name === user.name
-  );
+  const isSameUserInRoom = prevRoomData.users.some(({ name }) => name === user.name);
 
   if (isSameUserInRoom) {
     return prevRoomData;
   }
 
-  const updatedRoomData = {
-    ...prevRoomData,
-    users: [...prevRoomData.users, user],
-  };
+  const updatedRoomData = { ...prevRoomData, users: [...prevRoomData.users, user] };
   setToLocalLocalStorage(ROOM_KEY, updatedRoomData);
 
   return updatedRoomData;
@@ -56,8 +51,5 @@ export function putContents(currnetRoom: RoomData, contents: string) {
 }
 // 4. 커서
 export function postContent(user: User, selectionEnd: number) {
-  setToLocalLocalStorage('editing', {
-    user,
-    selectionEnd,
-  });
+  setToLocalLocalStorage('editing', { user, selectionEnd });
 }

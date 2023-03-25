@@ -1,13 +1,13 @@
 import { getUser, getRoom } from 'api/handlers';
-import { CursorData, RoomData, User } from 'types';
-import { parse } from 'utils/parse';
+import { OtherUserCursor, RoomData, User } from 'types';
+import parse from 'utils/parse';
 import createElement from 'utils/createElement';
 import navigate from 'utils/navigate';
 import Editor from 'components/Room/Editor';
 import UserList from 'components/Room/UserList';
 
 export default function RoomPage(): HTMLElement {
-  const container = createElement('div', 'room-page__container');
+  const container = createElement('div', { className: 'room-page__container' });
   const user = getUser();
 
   if (!user) {
@@ -21,12 +21,12 @@ export default function RoomPage(): HTMLElement {
   let userList = UserList({ users: roomData.users, user });
   container.append(editor, userList);
 
-  window.addEventListener('storage', (e) => {
+  window.addEventListener('storage', e => {
     const updatedRoomData = getRoom(user);
 
     if (e.key === 'editing') {
-      const cursorData = parse<CursorData>(e.newValue);
-      renderEditor(updatedRoomData, user, cursorData);
+      const otherUserCursor = parse<OtherUserCursor>(e.newValue);
+      renderEditor(updatedRoomData, user, otherUserCursor);
       return;
     }
 
@@ -37,18 +37,15 @@ export default function RoomPage(): HTMLElement {
   const renderEditor = (
     roomData: RoomData,
     user: User,
-    cursorData: CursorData | null
+    otherUserCursor: OtherUserCursor | null
   ) => {
-    const updatedEditor = Editor({ roomData, user, cursorData });
+    const updatedEditor = Editor({ roomData, user, otherUserCursor });
     container.replaceChild(updatedEditor, editor);
     editor = updatedEditor;
   };
 
   const renderUserList = (roomData: RoomData, user: User) => {
-    const updatedUserList = UserList({
-      users: roomData.users,
-      user,
-    });
+    const updatedUserList = UserList({ users: roomData.users, user });
     container.replaceChild(updatedUserList, userList);
     userList = updatedUserList;
   };

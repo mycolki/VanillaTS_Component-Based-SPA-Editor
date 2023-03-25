@@ -7,7 +7,7 @@ export interface RoomData {
   contents: string;
 }
 
-export interface CursorData {
+export interface OtherUserCursor {
   user: User;
   selectionEnd: number;
 }
