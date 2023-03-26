@@ -16,15 +16,15 @@ export default function Editor({
   const textarea = createElement('textarea', { className: '11', textContent: contents });
   const wrapper = createElement('div', { className: 'editor-wrapper' }, textarea);
 
-  if (otherUserCursors) {
-    wrapper.append(...getOtherUserCursors(user, otherUserCursors));
-  }
-
   textarea.addEventListener('input', e => {
     const target = e.target as HTMLTextAreaElement;
     putContents({ contents, users }, textarea.value);
     postCursor(user, target.selectionEnd);
   });
+
+  if (otherUserCursors) {
+    wrapper.append(...getOtherUserCursors(user, otherUserCursors));
+  }
 
   return wrapper;
 }

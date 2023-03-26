@@ -27,7 +27,6 @@ export default function RoomPage(): HTMLElement {
   let roomUsers = room.users;
   let editor = Editor({ room, user });
   let userList = MemoizedUserList({ users: room.users, user });
-  container.append(editor, userList);
 
   window.addEventListener('storage', e => {
     if (e.key !== 'cursor') {
@@ -69,5 +68,6 @@ export default function RoomPage(): HTMLElement {
     }
   };
 
+  container.append(editor, userList);
   return container;
 }

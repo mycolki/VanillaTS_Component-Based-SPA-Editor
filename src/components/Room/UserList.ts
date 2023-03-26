@@ -25,11 +25,18 @@ export default function MemoizedUserList(newProps: Props): HTMLElement {
   return memoizedUserList ?? UserList(newProps);
 }
 
+let roomUsers: User[] = [];
+
 function UserList({ users, user }: Props): HTMLElement {
-  const newUser = users[users.length - 1];
+  const differentUser = !roomUsers.length ? user : findDifferentUser(roomUsers, users);
+  const isNewUserEntered = roomUsers.length < users.length;
+  roomUsers = users;
+
   const header = createElement('h1', { textContent: '참여자 목록' });
   const list = createList(users, user);
-  const message = createElement('p', { textContent: `${newUser.name}님이 입장했습니다` });
+  const message = createElement('p', {
+    textContent: `${differentUser.name}님이 ${isNewUserEntered ? '입장했습니다' : '퇴장했습니다'}`,
+  });
   const button = createElement('button', {
     textContent: '나가기',
     type: 'button',
@@ -39,12 +46,12 @@ function UserList({ users, user }: Props): HTMLElement {
       navigate('/enter-room');
     },
   });
-  const sidebar = createElement('div', { className: 'sidebar' }, header, list, message, button);
 
   setTimeout(() => {
     message.textContent = '';
   }, 2000);
 
+  const sidebar = createElement('div', { className: 'sidebar' }, header, list, message, button);
   return sidebar;
 }
 
@@ -58,3 +65,12 @@ const createList = (users: User[], user: User) => {
 
   return createElement('ul', undefined, ...listItems);
 };
+
+function findDifferentUser(roomUsers: User[], users: User[]) {
+  const newUser = roomUsers.filter(
+    roomUser => !users.some(({ name }) => name === roomUser.name)
+  )[0];
+  const noUser = users.filter(user => !roomUsers.some(({ name }) => name === user.name))[0];
+
+  return newUser ?? noUser;
+}

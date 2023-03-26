@@ -24,7 +24,6 @@ export default function EnterRoomPage(): HTMLElement {
     enterRoomButton
   );
   const box = createElement('div', { className: 'name-box' }, header, form);
-  const container = createElement('div', { className: 'main-page__container' }, box);
 
   const onSubmit = () => {
     try {
@@ -38,5 +37,6 @@ export default function EnterRoomPage(): HTMLElement {
     }
   };
 
+  const container = createElement('div', { className: 'main-page__container' }, box);
   return container;
 }
