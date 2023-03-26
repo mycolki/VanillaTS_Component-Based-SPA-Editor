@@ -1,41 +1,48 @@
 import { OtherUserCursor, Room, User } from 'types';
-import { postContent, putContents } from 'api/handlers';
+import { postCursor, putContents } from 'api/handlers';
 import createElement from 'utils/createElement';
 
 interface Props {
   room: Room;
   user: User;
-  otherUserCursor?: OtherUserCursor | null;
+  otherUserCursors?: OtherUserCursor[] | null;
 }
 
 export default function Editor({
   room: { contents, users },
   user,
-  otherUserCursor,
+  otherUserCursors,
 }: Props): HTMLElement {
   const textarea = createElement('textarea', { className: '11', textContent: contents });
-  const cursor = createElement('span', { className: 'cursor', style: { display: 'none' } });
-  const wrapper = createElement('div', { className: 'editor-wrapper' }, textarea, cursor);
+  const wrapper = createElement('div', { className: 'editor-wrapper' }, textarea);
 
-  if (otherUserCursor) {
-    showOtherUserCursor(cursor, otherUserCursor);
+  if (otherUserCursors) {
+    wrapper.append(...getOtherUserCursors(user, otherUserCursors));
   }
 
   textarea.addEventListener('input', e => {
     const target = e.target as HTMLTextAreaElement;
     putContents({ contents, users }, textarea.value);
-    postContent(user, target.selectionEnd);
+    postCursor(user, target.selectionEnd);
   });
 
   return wrapper;
 }
 
-const showOtherUserCursor = (cursor: HTMLSpanElement, otherUserCursor: OtherUserCursor) => {
-  const { user: otherUser, selectionEnd } = otherUserCursor;
+const getOtherUserCursors = (user: User, otherUserCursors: OtherUserCursor[]) => {
   const textarea = document.querySelector('textarea');
-  cursor.textContent = otherUser.name;
+  const cursors: HTMLSpanElement[] = [];
 
-  if (textarea) {
+  if (!textarea) {
+    return cursors;
+  }
+
+  for (const { user: otherUser, selectionEnd } of otherUserCursors) {
+    if (otherUser.name === user.name) {
+      continue;
+    }
+
+    const cursor = createElement('span', { className: 'cursor', textContent: otherUser.name });
     const lineHeight = parseInt(getComputedStyle(textarea).lineHeight, 10);
     const lines = textarea.value.slice(0, selectionEnd).split('\n');
     const currentLine = lines.length;
@@ -44,6 +51,8 @@ const showOtherUserCursor = (cursor: HTMLSpanElement, otherUserCursor: OtherUser
 
     cursor.style.left = `${(selectionEnd - prevLinesLength) * 10}px`;
     cursor.style.top = `${(currentLine - 1) * lineHeight - textarea.scrollTop}px`;
-    cursor.style.display = 'block';
+    cursors.push(cursor);
   }
+
+  return cursors;
 };

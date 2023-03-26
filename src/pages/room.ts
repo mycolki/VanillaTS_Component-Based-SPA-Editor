@@ -23,19 +23,19 @@ export default function RoomPage(): HTMLElement {
   container.append(editor, userList);
 
   window.addEventListener('storage', e => {
-    if (e.key !== 'editing') {
+    if (e.key !== 'cursor') {
       room = getRoom(user);
       renderUserList(room.users);
       renderEditor();
       return;
     }
 
-    const otherUserCursor = parse<OtherUserCursor>(e.newValue);
+    const otherUserCursor = parse<OtherUserCursor[]>(e.newValue);
     renderEditor(otherUserCursor);
   });
 
-  const renderEditor = (otherUserCursor: OtherUserCursor | null = null) => {
-    const updatedEditor = Editor({ room, user, otherUserCursor });
+  const renderEditor = (otherUserCursor: OtherUserCursor[] | null = null) => {
+    const updatedEditor = Editor({ room, user, otherUserCursors: otherUserCursor });
     container.replaceChild(updatedEditor, editor);
     editor = updatedEditor;
   };

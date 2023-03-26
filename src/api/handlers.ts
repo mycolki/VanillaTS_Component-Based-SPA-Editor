@@ -1,4 +1,4 @@
-import { Room, User } from 'types';
+import { Room, User, OtherUserCursor } from 'types';
 import {
   getFromLocalStorage,
   getFromSessionStorage,
@@ -8,6 +8,7 @@ import {
 
 const ROOM_KEY = 'room';
 const USER_KEY = 'user';
+const CUSOR_KEY = 'cursor';
 
 // 1.입장버튼 클릭 - 유저 생성
 export function postUser(user: User) {
@@ -50,6 +51,21 @@ export function putContents(currnetRoom: Room, contents: string) {
   setToLocalLocalStorage(ROOM_KEY, { ...currnetRoom, contents });
 }
 // 4. 커서
-export function postContent(user: User, selectionEnd: number) {
-  setToLocalLocalStorage('editing', { user, selectionEnd });
+export function postCursor(user: User, selectionEnd: number) {
+  const cursors = getFromLocalStorage<OtherUserCursor[]>(CUSOR_KEY);
+
+  if (!cursors) {
+    setToLocalLocalStorage(CUSOR_KEY, [{ user, selectionEnd }]);
+    return;
+  }
+
+  const index = cursors.findIndex(cursor => cursor.user.name === user.name);
+
+  if (index === -1) {
+    cursors.push({ user, selectionEnd });
+  } else {
+    cursors[index].selectionEnd = selectionEnd;
+  }
+
+  setToLocalLocalStorage(CUSOR_KEY, cursors);
 }
