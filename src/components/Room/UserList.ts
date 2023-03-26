@@ -1,6 +1,9 @@
+import { deleteCursor } from 'api/handlers/editor';
+import { deleteUser } from 'api/handlers/user';
 import { User } from 'types';
 import createElement from 'utils/createElement';
 import isPropsEqual from 'utils/isPropsEqual';
+import navigate from 'utils/navigate';
 
 interface Props {
   users: User[];
@@ -27,7 +30,16 @@ function UserList({ users, user }: Props): HTMLElement {
   const header = createElement('h1', { textContent: '참여자 목록' });
   const list = createList(users, user);
   const message = createElement('p', { textContent: `${newUser.name}님이 입장했습니다` });
-  const sidebar = createElement('div', { className: 'sidebar' }, header, list, message);
+  const button = createElement('button', {
+    textContent: '나가기',
+    type: 'button',
+    onclick() {
+      deleteCursor(user);
+      deleteUser(user);
+      navigate('/enter-room');
+    },
+  });
+  const sidebar = createElement('div', { className: 'sidebar' }, header, list, message, button);
 
   setTimeout(() => {
     message.textContent = '';

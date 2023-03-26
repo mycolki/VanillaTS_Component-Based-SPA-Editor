@@ -1,7 +1,6 @@
 import { OtherUserCursor, User } from 'types';
-import { deleteCursor } from 'api/handlers/editor';
 import { getRoom } from 'api/handlers/room';
-import { deleteUser, getUser } from 'api/handlers/user';
+import { getUser } from 'api/handlers/user';
 import parse from 'utils/parse';
 import createElement from 'utils/createElement';
 import navigate from 'utils/navigate';
@@ -11,14 +10,20 @@ import MemoizedUserList from 'components/Room/UserList';
 export default function RoomPage(): HTMLElement {
   const container = createElement('div', { className: 'room-page__container' });
   const user = getUser();
+  let room = getRoom();
 
   if (!user) {
-    alert('닉네임 설정 페이지로 이동합니다. 😀');
+    alert('닉네임 설정 페이지로 이동합니다.');
     navigate('/enter-room');
     return container;
   }
 
-  let room = getRoom(user);
+  if (!room) {
+    alert('방 만들기 페이지로 이동합니다.');
+    navigate('/');
+    return container;
+  }
+
   let roomUsers = room.users;
   let editor = Editor({ room, user });
   let userList = MemoizedUserList({ users: room.users, user });
@@ -26,25 +31,25 @@ export default function RoomPage(): HTMLElement {
 
   window.addEventListener('storage', e => {
     if (e.key !== 'cursor') {
-      room = getRoom(user);
-      renderUserList(room.users);
-      renderEditor();
-      return;
+      room = getRoom();
+
+      if (room) {
+        renderUserList(room.users);
+        renderEditor();
+        return;
+      }
     }
 
     const otherUserCursor = parse<OtherUserCursor[]>(e.newValue);
     renderEditor(otherUserCursor);
   });
 
-  window.addEventListener('beforeunload', () => {
-    deleteUser(user);
-    deleteCursor(user);
-  });
-
   const renderEditor = (otherUserCursor: OtherUserCursor[] | null = null) => {
-    const updatedEditor = Editor({ room, user, otherUserCursors: otherUserCursor });
-    container.replaceChild(updatedEditor, editor);
-    editor = updatedEditor;
+    if (room) {
+      const updatedEditor = Editor({ room, user, otherUserCursors: otherUserCursor });
+      container.replaceChild(updatedEditor, editor);
+      editor = updatedEditor;
+    }
   };
 
   const renderUserList = (updatedRoomUsers: User[]) => {

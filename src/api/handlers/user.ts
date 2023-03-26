@@ -14,14 +14,18 @@ import {
 export function postUser(user: User) {
   const room = getFromLocalStorage<Room>(STORAGE_KEY.ROOM);
 
-  if (!room) {
-    return;
-  }
+  if (room) {
+    const isUserName = room.users.some(roomUser => roomUser.name === user.name);
 
-  const isUserName = room.users.some(roomUser => roomUser.name === user.name);
+    if (isUserName) {
+      throw new Error('이미 존재하는 이름입니다. 다시 생각해 주세요');
+    }
 
-  if (isUserName) {
-    throw new Error('이미 존재하는 이름입니다. 다시 생각해 주세요');
+    const updatedRoom = { ...room, users: [...room.users, user] };
+    setToLocalLocalStorage(STORAGE_KEY.ROOM, updatedRoom);
+  } else {
+    const newRoom = { contents: '', users: [user] };
+    setToLocalLocalStorage(STORAGE_KEY.ROOM, newRoom);
   }
 
   setToSessionStorage(STORAGE_KEY.USER, user);

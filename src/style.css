@@ -19,6 +19,7 @@ ul {
   padding: 0;
   margin: 0;
   list-style: none;
+  border-radius: 10px;
 }
 
 button {
@@ -58,7 +59,7 @@ button:hover {
 }
 
 .name-box h1 {
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   color: white;
 }
 
@@ -81,6 +82,7 @@ button:hover {
 .name-box__form button {
   padding: 0.5rem 1rem;
   font-size: 1rem;
+  background-color: rgb(216, 238, 252);
 }
 
 .room-page__container {
@@ -104,7 +106,7 @@ button:hover {
   flex: 0;
   margin: 0;
   padding-bottom: 0.7rem;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   color: white;
   text-align: center;
 }
@@ -117,6 +119,11 @@ button:hover {
 
 .sidebar ul li {
   padding: 0.625rem;
+}
+
+.sidebar button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
 }
 
 .user {
