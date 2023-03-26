@@ -1,5 +1,5 @@
 import { OtherUserCursor, Room, User } from 'types';
-import { postCursor, putContents } from 'api/handlers';
+import { postCursor, putContents } from 'api/handlers/editor';
 import createElement from 'utils/createElement';
 
 interface Props {

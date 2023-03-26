@@ -1,4 +1,4 @@
-import { postUser } from 'api/handlers';
+import { postUser } from 'api/handlers/user';
 import createElement from 'utils/createElement';
 import navigate from 'utils/navigate';
 

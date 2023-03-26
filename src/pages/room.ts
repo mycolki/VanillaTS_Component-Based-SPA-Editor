@@ -1,5 +1,7 @@
 import { OtherUserCursor, User } from 'types';
-import { getUser, getRoom, deleteUser, deleteCursor } from 'api/handlers';
+import { deleteCursor } from 'api/handlers/editor';
+import { getRoom } from 'api/handlers/room';
+import { deleteUser, getUser } from 'api/handlers/user';
 import parse from 'utils/parse';
 import createElement from 'utils/createElement';
 import navigate from 'utils/navigate';
