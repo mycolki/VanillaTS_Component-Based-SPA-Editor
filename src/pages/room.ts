@@ -1,10 +1,10 @@
+import { OtherUserCursor, User } from 'types';
 import { getUser, getRoom } from 'api/handlers';
-import { OtherUserCursor, RoomData, User } from 'types';
 import parse from 'utils/parse';
 import createElement from 'utils/createElement';
 import navigate from 'utils/navigate';
 import Editor from 'components/Room/Editor';
-import UserList from 'components/Room/UserList';
+import MemoizedUserList from 'components/Room/UserList';
 
 export default function RoomPage(): HTMLElement {
   const container = createElement('div', { className: 'room-page__container' });
@@ -16,38 +16,45 @@ export default function RoomPage(): HTMLElement {
     return container;
   }
 
-  const roomData = getRoom(user);
-  let editor = Editor({ roomData, user });
-  let userList = UserList({ users: roomData.users, user });
+  let room = getRoom(user);
+  let roomUsers = room.users;
+  let editor = Editor({ room, user });
+  let userList = MemoizedUserList({ users: room.users, user });
   container.append(editor, userList);
 
   window.addEventListener('storage', e => {
-    const updatedRoomData = getRoom(user);
-
-    if (e.key === 'editing') {
-      const otherUserCursor = parse<OtherUserCursor>(e.newValue);
-      renderEditor(updatedRoomData, user, otherUserCursor);
+    if (e.key !== 'editing') {
+      room = getRoom(user);
+      renderUserList(room.users);
+      renderEditor();
       return;
     }
 
-    renderUserList(updatedRoomData, user);
-    renderEditor(updatedRoomData, user, null);
+    const otherUserCursor = parse<OtherUserCursor>(e.newValue);
+    renderEditor(otherUserCursor);
   });
 
-  const renderEditor = (
-    roomData: RoomData,
-    user: User,
-    otherUserCursor: OtherUserCursor | null
-  ) => {
-    const updatedEditor = Editor({ roomData, user, otherUserCursor });
+  const renderEditor = (otherUserCursor: OtherUserCursor | null = null) => {
+    const updatedEditor = Editor({ room, user, otherUserCursor });
     container.replaceChild(updatedEditor, editor);
     editor = updatedEditor;
   };
 
-  const renderUserList = (roomData: RoomData, user: User) => {
-    const updatedUserList = UserList({ users: roomData.users, user });
+  const renderUserList = (updatedRoomUsers: User[]) => {
+    const isSameUsers =
+      roomUsers.length === updatedRoomUsers.length &&
+      roomUsers.every((user, i) => user.name === updatedRoomUsers[i].name);
+    const updatedUserList = MemoizedUserList({
+      users: isSameUsers ? roomUsers : updatedRoomUsers,
+      user,
+    });
+
     container.replaceChild(updatedUserList, userList);
     userList = updatedUserList;
+
+    if (!isSameUsers) {
+      roomUsers = updatedRoomUsers;
+    }
   };
 
   return container;

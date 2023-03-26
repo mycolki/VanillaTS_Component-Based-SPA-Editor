@@ -1,15 +1,15 @@
+import { OtherUserCursor, Room, User } from 'types';
 import { postContent, putContents } from 'api/handlers';
-import { OtherUserCursor, RoomData, User } from 'types';
 import createElement from 'utils/createElement';
 
 interface Props {
-  roomData: RoomData;
+  room: Room;
   user: User;
   otherUserCursor?: OtherUserCursor | null;
 }
 
 export default function Editor({
-  roomData: { contents, users },
+  room: { contents, users },
   user,
   otherUserCursor,
 }: Props): HTMLElement {
@@ -18,22 +18,23 @@ export default function Editor({
   const wrapper = createElement('div', { className: 'editor-wrapper' }, textarea, cursor);
 
   if (otherUserCursor) {
-    const { user: otherUser, selectionEnd } = otherUserCursor;
-    cursor.textContent = otherUser.name;
-    setCursorPosition(cursor, selectionEnd);
+    showOtherUserCursor(cursor, otherUserCursor);
   }
 
   textarea.addEventListener('input', e => {
     const target = e.target as HTMLTextAreaElement;
-    putContents({ contents, users }, textarea.value); // contents
-    postContent(user, target.selectionEnd); // editing 이벤트
+    putContents({ contents, users }, textarea.value);
+    postContent(user, target.selectionEnd);
   });
 
   return wrapper;
 }
 
-const setCursorPosition = (cursor: HTMLSpanElement, selectionEnd: number) => {
+const showOtherUserCursor = (cursor: HTMLSpanElement, otherUserCursor: OtherUserCursor) => {
+  const { user: otherUser, selectionEnd } = otherUserCursor;
   const textarea = document.querySelector('textarea');
+  cursor.textContent = otherUser.name;
+
   if (textarea) {
     const lineHeight = parseInt(getComputedStyle(textarea).lineHeight, 10);
     const lines = textarea.value.slice(0, selectionEnd).split('\n');

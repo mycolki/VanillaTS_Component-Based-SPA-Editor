@@ -1,28 +1,37 @@
 import { User } from 'types';
 import createElement from 'utils/createElement';
-
-let roomUsers: User[] = [];
+import isPropsEqual from 'utils/isPropsEqual';
 
 interface Props {
   users: User[];
   user: User;
 }
 
-export default function UserList({ users, user }: Props): HTMLElement {
+let props: Props | null = null;
+let memoizedUserList: HTMLElement | null = null;
+
+export default function MemoizedUserList(newProps: Props): HTMLElement {
+  const isEqualProps = isPropsEqual(props, newProps);
+
+  if (!isEqualProps) {
+    props = newProps;
+    memoizedUserList = UserList(props);
+    return memoizedUserList;
+  }
+
+  return memoizedUserList ?? UserList(newProps);
+}
+
+function UserList({ users, user }: Props): HTMLElement {
+  const newUser = users[users.length - 1];
   const header = createElement('h1', { textContent: '참여자 목록' });
   const list = createList(users, user);
-  const message = createElement('p');
+  const message = createElement('p', { textContent: `${newUser.name}님이 입장했습니다` });
   const sidebar = createElement('div', { className: 'sidebar' }, header, list, message);
 
-  if (JSON.stringify(roomUsers) !== JSON.stringify(users)) {
-    const newUser = users[users.length - 1];
-    roomUsers = users;
-
-    message.textContent = `${newUser.name}님이 입장했습니다`;
-    setTimeout(() => {
-      message.textContent = '';
-    }, 2000);
-  }
+  setTimeout(() => {
+    message.textContent = '';
+  }, 2000);
 
   return sidebar;
 }

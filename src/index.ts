@@ -1,6 +1,6 @@
 import './style.css';
-import app from './app';
 import createRoot from 'utils/createRoot';
+import app from './app';
 
 const rootEl = document.getElementById('root');
 

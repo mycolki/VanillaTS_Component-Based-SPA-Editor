@@ -2,7 +2,7 @@ export interface User {
   name: string;
 }
 
-export interface RoomData {
+export interface Room {
   users: User[];
   contents: string;
 }

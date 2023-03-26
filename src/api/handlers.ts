@@ -1,4 +1,4 @@
-import { RoomData, User } from 'types';
+import { Room, User } from 'types';
 import {
   getFromLocalStorage,
   getFromSessionStorage,
@@ -26,27 +26,27 @@ export function getUser() {
 // 유저 있는데 방이 없는 경우는, 원래 방은 폭파되는게 맞고
 // 실제 플젝이라면 이렇게 직접 url로 방에 접근하는 경우는 없을테니까!
 export function getRoom(user: User) {
-  const prevRoomData = getFromLocalStorage<RoomData>(ROOM_KEY);
+  const prevRoom = getFromLocalStorage<Room>(ROOM_KEY);
 
-  if (!prevRoomData) {
-    const newRoomData = { contents: '', users: [user] };
-    setToLocalLocalStorage(ROOM_KEY, newRoomData);
-    return newRoomData;
+  if (!prevRoom) {
+    const newRoom = { contents: '', users: [user] };
+    setToLocalLocalStorage(ROOM_KEY, newRoom);
+    return newRoom;
   }
 
-  const isSameUserInRoom = prevRoomData.users.some(({ name }) => name === user.name);
+  const isSameUserInRoom = prevRoom.users.some(({ name }) => name === user.name);
 
   if (isSameUserInRoom) {
-    return prevRoomData;
+    return prevRoom;
   }
 
-  const updatedRoomData = { ...prevRoomData, users: [...prevRoomData.users, user] };
-  setToLocalLocalStorage(ROOM_KEY, updatedRoomData);
+  const updatedRoom = { ...prevRoom, users: [...prevRoom.users, user] };
+  setToLocalLocalStorage(ROOM_KEY, updatedRoom);
 
-  return updatedRoomData;
+  return updatedRoom;
 }
 // 3. 에디터 업데이트
-export function putContents(currnetRoom: RoomData, contents: string) {
+export function putContents(currnetRoom: Room, contents: string) {
   setToLocalLocalStorage(ROOM_KEY, { ...currnetRoom, contents });
 }
 // 4. 커서
