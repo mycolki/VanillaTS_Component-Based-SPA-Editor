@@ -17,8 +17,7 @@ export default function EnterRoomPage(): HTMLElement {
       className: 'name-box__form',
       onsubmit(e) {
         e.preventDefault();
-        postUser({ name: input.value });
-        navigate('/room');
+        onSubmit();
       },
     },
     input,
@@ -26,6 +25,18 @@ export default function EnterRoomPage(): HTMLElement {
   );
   const box = createElement('div', { className: 'name-box' }, header, form);
   const container = createElement('div', { className: 'main-page__container' }, box);
+
+  const onSubmit = () => {
+    try {
+      postUser({ name: input.value });
+      navigate('/room');
+    } catch (error) {
+      if (error instanceof Error) {
+        alert(error.message);
+        return;
+      }
+    }
+  };
 
   return container;
 }
