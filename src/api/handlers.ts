@@ -1,7 +1,10 @@
 import { Room, User, OtherUserCursor } from 'types';
 import {
+  clearLocalStroage,
+  clearSessionStorage,
   getFromLocalStorage,
   getFromSessionStorage,
+  removeItemFromLocalStroage,
   setToLocalLocalStorage,
   setToSessionStorage,
 } from './storage';
@@ -27,25 +30,26 @@ export function getUser() {
 // 유저 있는데 방이 없는 경우는, 원래 방은 폭파되는게 맞고
 // 실제 플젝이라면 이렇게 직접 url로 방에 접근하는 경우는 없을테니까!
 export function getRoom(user: User) {
-  const prevRoom = getFromLocalStorage<Room>(ROOM_KEY);
+  const room = getFromLocalStorage<Room>(ROOM_KEY);
 
-  if (!prevRoom) {
+  if (!room) {
     const newRoom = { contents: '', users: [user] };
     setToLocalLocalStorage(ROOM_KEY, newRoom);
     return newRoom;
   }
 
-  const isSameUserInRoom = prevRoom.users.some(({ name }) => name === user.name);
+  const isSameUserInRoom = room.users.some(({ name }) => name === user.name);
 
   if (isSameUserInRoom) {
-    return prevRoom;
+    return room;
   }
 
-  const updatedRoom = { ...prevRoom, users: [...prevRoom.users, user] };
+  const updatedRoom = { ...room, users: [...room.users, user] };
   setToLocalLocalStorage(ROOM_KEY, updatedRoom);
 
   return updatedRoom;
 }
+
 // 3. 에디터 업데이트
 export function putContents(currnetRoom: Room, contents: string) {
   setToLocalLocalStorage(ROOM_KEY, { ...currnetRoom, contents });
@@ -68,4 +72,40 @@ export function postCursor(user: User, selectionEnd: number) {
   }
 
   setToLocalLocalStorage(CUSOR_KEY, cursors);
+}
+
+// unmount
+export function deleteUser(user: User) {
+  const room = getFromLocalStorage<Room>(ROOM_KEY);
+
+  if (!room) {
+    return;
+  }
+
+  const restUsers = room.users.filter(roomUser => roomUser.name !== user.name);
+
+  if (!restUsers.length) {
+    removeItemFromLocalStroage(ROOM_KEY);
+  } else {
+    setToLocalLocalStorage(ROOM_KEY, { ...room, users: restUsers });
+  }
+
+  clearSessionStorage();
+}
+
+export function deleteCursor(user: User) {
+  const cursors = getFromLocalStorage<OtherUserCursor[]>(CUSOR_KEY);
+
+  if (!cursors) {
+    return;
+  }
+
+  const restCursors = cursors.filter(cursor => cursor.user.name !== user.name);
+
+  if (!restCursors.length) {
+    removeItemFromLocalStroage(CUSOR_KEY);
+    return;
+  }
+
+  setToLocalLocalStorage(CUSOR_KEY, restCursors);
 }

@@ -1,5 +1,5 @@
 import { OtherUserCursor, User } from 'types';
-import { getUser, getRoom } from 'api/handlers';
+import { getUser, getRoom, deleteUser, deleteCursor } from 'api/handlers';
 import parse from 'utils/parse';
 import createElement from 'utils/createElement';
 import navigate from 'utils/navigate';
@@ -32,6 +32,11 @@ export default function RoomPage(): HTMLElement {
 
     const otherUserCursor = parse<OtherUserCursor[]>(e.newValue);
     renderEditor(otherUserCursor);
+  });
+
+  window.addEventListener('beforeunload', () => {
+    deleteUser(user);
+    deleteCursor(user);
   });
 
   const renderEditor = (otherUserCursor: OtherUserCursor[] | null = null) => {

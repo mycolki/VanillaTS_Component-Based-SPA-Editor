@@ -12,6 +12,10 @@ export function setToSessionStorage<T>(key: string, item: T) {
   window.sessionStorage.setItem(key, JSON.stringify(item));
 }
 
+export function clearSessionStorage() {
+  window.sessionStorage.clear();
+}
+
 export function getFromLocalStorage<T>(key: string): T | null {
   const storage = window.localStorage.getItem(key);
 
@@ -24,4 +28,8 @@ export function getFromLocalStorage<T>(key: string): T | null {
 
 export function setToLocalLocalStorage<T>(key: string, item: T) {
   window.localStorage.setItem(key, JSON.stringify(item));
+}
+
+export function removeItemFromLocalStroage(key: string) {
+  window.localStorage.removeItem(key);
 }
