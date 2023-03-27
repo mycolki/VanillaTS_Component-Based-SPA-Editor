@@ -27,6 +27,9 @@ export default function EnterRoomPage(): HTMLElement {
 
   const onSubmit = () => {
     try {
+      if (!input.value.trim()) {
+        throw new Error('공백없이 이름을 입력해 주세요');
+      }
       postUser({ name: input.value });
       navigate('/room');
     } catch (error) {
