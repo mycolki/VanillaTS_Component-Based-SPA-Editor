@@ -1,4 +1,4 @@
-# Component-Based SPA with Pure TypeScript
+# SPA(Component-Based) with Pure TypeScript
 Single Page Application 을 프레임워크나 라이브러리의 도움없이 오직 **TS로만 구현**하여 만든 간단한 에디터 WEB 애플리케이션입니다.<br />
 React 아키텍쳐를 모방하여 Component 기반의 라우팅 및 라우팅 방식을 직접 구현했습니다.
 
@@ -14,8 +14,19 @@ Assignment implementation
 <br />
 
 ## **About Development**
+### **Single Page Application**
+페이지별로 HTML을 서버에 요청해서 페이지를 그리는 방식이 아니라, 순수 TypeScript 만을 가지고 Client Side Rendering 방식의 Single Page Application을 개발했습니다. **React의 아키텍처**와 유사하게 컴포넌트 단위로 페이지와 구성요소를 만들었으며, Routing기반의 CSR 플로우를 구현했습니다. 그리고 React가 선언적으로 UI를 구축하는 것처럼 뷰를 그리기 위해, 태그에 해당하는 속성·자식 요소를 전달하여 HTML 요소를 생성하는 createElement 함수를 추상화하여 들었습니다. 이를 통해 엘리먼트를 선언적으로 만들 수 있을 뿐만 아니라 가독성과 재사용성을 높일 수 있었습니다. 또한 불필요한 리렌더링을 최소화하기 위해, 동일한 props를 하위 컴포넌트에 전달할 때 같은 레퍼런스를 전달하고, 하위 컴포넌트에 메모이제이션을 적용했습니다.
+
+### **Data Strategy**
+브라우저의 웹스토리지 LocalStorage 와 SessionStroage 를 이용해서 데이터를 핸들링했습니다. 
+에디터와 유저목록 정보는 새로고침할 때마다 유지가 되어야 하며, 다른 유저가 들어왔을 때에도 기존 데이터를 가져와야 하기 때문에, 서버의 DB 로 간주하고 LocalStorage 를 사용했습니다. 그래서 서버에 보내는 요청과 CRUD 기반의 핸들러들을 분리하여, 추후 실제 API 를 요청하는 로직으로 대체할 수 있게 확장성을 고려해서 작업했습니다. 그리고 유저의 정보는 탭에서만 유지할 수 있도록 클라이언트단의 세션으로 간주하고 SessionStroage 를 사용하여 관리했습니다. 
+
+### Idea Point
+- 방의 contents 와 users 정보 및 cursor 정보는 LocalStroage에, user의 정보는 SessionStroage 에 저장했습니다.
+- 에디터를 편집할 때마다 유저목록  컴포넌트가 리렌더링되지 않도록, UserList 컴포넌트를 메모아이징하고 props 를 비교하여 불필요한 리렌더링을 방지했습니다.
+- 위계에 맞게 컴포넌트 및 파일을 분리하여 개발생산성을 높였습니다.
   <details>
-    <summary>디렉토리 구조(위계에 맞게 컴포넌트 및 파일을 분리하여 가독성과 생산성을 높였습니다)</summary>
+    <summary>디렉토리 구조</summary>
       
         src
          ┣ **api**
@@ -50,15 +61,7 @@ Assignment implementation
  
   </details>
   
-- 방의 contents 와 users 정보 및 cursor 정보는 LocalStroage에, user의 정보는 SessionStroage 에 저장했습니다.
-- 에디터를 편집할 때마다 유저목록  컴포넌트가 리렌더링되지 않도록, UserList 컴포넌트를 메모아이징하고 props 를 비교하여 불필요한 리렌더링을 방지했습니다.
 
-### **Single Page Application**
-페이지별로 HTML을 서버에 요청해서 페이지를 그리는 방식이 아니라, 순수 TypeScript 만을 가지고 Client Side Rendering 방식의 Single Page Application을 개발했습니다. **React의 아키텍처**와 유사하게 컴포넌트 단위로 페이지와 구성요소를 만들었으며, Routing기반의 CSR 플로우를 구현했습니다. 그리고 React가 선언적으로 UI를 구축하는 것처럼 뷰를 그리기 위해, 태그에 해당하는 속성·자식 요소를 전달하여 HTML 요소를 생성하는 createElement 함수를 추상화하여 들었습니다. 이를 통해 엘리먼트를 선언적으로 만들 수 있을 뿐만 아니라 가독성과 재사용성을 높일 수 있었습니다. 또한 불필요한 리렌더링을 최소화하기 위해, 동일한 props를 하위 컴포넌트에 전달할 때 같은 레퍼런스를 전달하고, 하위 컴포넌트에 메모이제이션을 적용했습니다.
-
-### **Data Strategy**
-브라우저의 웹스토리지 LocalStorage 와 SessionStroage 를 이용해서 데이터를 핸들링했습니다. 
-에디터와 유저목록 정보는 새로고침할 때마다 유지가 되어야 하며, 다른 유저가 들어왔을 때에도 기존 데이터를 가져와야 하기 때문에, 서버의 DB 로 간주하고 LocalStorage 를 사용했습니다. 그래서 서버에 보내는 요청과 CRUD 기반의 핸들러들을 분리하여, 추후 실제 API 를 요청하는 로직으로 대체할 수 있게 확장성을 고려해서 작업했습니다. 그리고 유저의 정보는 탭에서만 유지할 수 있도록 클라이언트단의 세션으로 간주하고 SessionStroage 를 사용하여 관리했습니다. 
 
 <br />
 
