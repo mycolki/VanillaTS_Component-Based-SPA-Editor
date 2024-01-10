@@ -1,16 +1,19 @@
-# Component-Based SPA with Pure JavaScript
-SPA-컴포넌트를 JS로만 구현하여 만든 간단한 에디터 WEB 애플리케이션입니다.
+# Component-Based SPA with Pure TypeScript
+Single Page Application 을 프레임워크나 라이브러리의 도움없이 오직 **TS로만 구현**하여 만든 간단한 에디터 WEB 애플리케이션입니다.<br />
+React 아키텍쳐를 모방하여 Component 기반의 라우팅 및 라우팅 방식을 직접 구현했습니다.
+
+Assignment implementation
 
 <br />
 
-# Stack
+## Stack
 - TypeScript
 - Webpack-dev-server
 - Prettier
 
 <br />
 
-# **Development**
+## **About Development**
   <details>
     <summary>디렉토리 구조(위계에 맞게 컴포넌트 및 파일을 분리하여 가독성과 생산성을 높였습니다)</summary>
       
@@ -51,7 +54,7 @@ SPA-컴포넌트를 JS로만 구현하여 만든 간단한 에디터 WEB 애플�
 - 에디터를 편집할 때마다 유저목록  컴포넌트가 리렌더링되지 않도록, UserList 컴포넌트를 메모아이징하고 props 를 비교하여 불필요한 리렌더링을 방지했습니다.
 
 ### **Single Page Application**
-페이지별로 HTML 을 보여주는 방식이 아닌 TypeScript 를 사용하여 SPA로 만들었습니다. 그리고 React의 아키텍처와 유사하게 라우트와 컴포넌트를 분리하여 구조화했습니다. 그리고 React가 선언적으로 UI 를 구축하는 것처럼 뷰를 그리기 위해, 태그에 해당하는 속성·자식 요소를 전달하여 HTML 요소를 생성하는 createElement 함수를 만들었습니다. 요소를 만드는 함수를 추상화함으로써 요소를 선언적으로 만들 뿐만 아니라 가독성과 재사용성을 높일 수 있었습니다. 또한 불필요한 리렌더링을 최소화하기 위해, 동일한 props를 하위 컴포넌트에 전달할 때 같은 레퍼런스를 전달하고, 하위 컴포넌트에 메모이제이션을 적용했습니다.
+페이지별로 HTML을 서버에 요청해서 페이지를 그리는 방식이 아니라, 순수 TypeScript 만을 가지고 Client Side Rendering 방식의 Single Page Application을 개발했습니다. **React의 아키텍처**와 유사하게 컴포넌트 단위로 페이지와 구성요소를 만들었으며, Routing기반의 CSR 플로우를 구현했습니다. 그리고 React가 선언적으로 UI를 구축하는 것처럼 뷰를 그리기 위해, 태그에 해당하는 속성·자식 요소를 전달하여 HTML 요소를 생성하는 createElement 함수를 추상화하여 들었습니다. 이를 통해 엘리먼트를 선언적으로 만들 수 있을 뿐만 아니라 가독성과 재사용성을 높일 수 있었습니다. 또한 불필요한 리렌더링을 최소화하기 위해, 동일한 props를 하위 컴포넌트에 전달할 때 같은 레퍼런스를 전달하고, 하위 컴포넌트에 메모이제이션을 적용했습니다.
 
 ### **Data Strategy**
 브라우저의 웹스토리지 LocalStorage 와 SessionStroage 를 이용해서 데이터를 핸들링했습니다. 
@@ -59,7 +62,7 @@ SPA-컴포넌트를 JS로만 구현하여 만든 간단한 에디터 WEB 애플�
 
 <br />
 
-# Features
+## Features
 <img width="800" src="asset/mov.gif" />
 
 |enter|exit|cursor moving|
@@ -69,7 +72,7 @@ SPA-컴포넌트를 JS로만 구현하여 만든 간단한 에디터 WEB 애플�
 
 <br />
 
-# Spec Detail
+## Specification Details
 
 ### 홈 MainPage
 - 방만들기를 클릭하면, `/enter-room` 화면으로 이동합니다.
