@@ -1,6 +1,6 @@
 # SPA(Component-Based) with Pure TypeScript
 Single Page Application 을 프레임워크나 라이브러리의 도움없이 오직 **TS로만 구현**하여 만든 간단한 에디터 WEB 애플리케이션입니다.<br />
-React 아키텍쳐를 모방하여 Component 기반의 라우팅 및 라우팅 방식을 직접 구현했습니다.
+React 아키텍쳐를 모티브로하여 Component형태로 작성하고, 라우팅 방식을 직접 구현했습니다.
 
 Assignment implementation
 
